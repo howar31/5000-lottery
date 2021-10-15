@@ -107,15 +107,13 @@
     ids.map((id) => {
       console.log(id)
       let winning = []
-      if (validateId(id)) {
-        coupons.map((coupon) => {
-          coupon.codes.map((code) => {
-            if (id.slice(-code.length) === code) {
-              winning.push(`${coupon.name}[${code}]`)
-            }
-          })
+      coupons.map((coupon) => {
+        coupon.codes.map((code) => {
+          if (id.slice(-code.length) === code) {
+            winning.push(`${coupon.name}[${code}]`)
+          }
         })
-      }
+      })
       rs.push({
         id: id,
         winning: winning,
@@ -138,13 +136,16 @@
       h3.appendChild(document.createTextNode(r.id))
       result.appendChild(h3)
 
-      let span = document.createElement('span')
+      let br = document.createElement('br')
+      let span
+      span = document.createElement('span')
       if (!r.valid) {
-        span.appendChild(document.createTextNode('身份證字號格式錯誤'))
-      } else {
-        let winning = r.winning.length > 0 ? `中：${r.winning.join(', ')}` : '都沒中'
-        span.appendChild(document.createTextNode(winning))
+        span.appendChild(document.createTextNode('身份證字號格式異常，改查詢末三碼'))
+        result.appendChild(span).appendChild(br)
       }
+      span = document.createElement('span')
+      let winning = r.winning.length > 0 ? `中：${r.winning.join(', ')}` : '都沒中'
+      span.appendChild(document.createTextNode(winning))
       result.appendChild(span)
     })
 
